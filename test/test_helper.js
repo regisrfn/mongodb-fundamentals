@@ -9,4 +9,11 @@ mongoose.connection
     .once('open', () => console.log("Good to go"))
     .on('error', (error) => {
         console.warn("Error CONNECTION", error)
-    })          
+    })
+    
+beforeEach((done) => {
+    mongoose.connection.collections.users.drop()
+    .then(() => {
+        done()
+    })
+})

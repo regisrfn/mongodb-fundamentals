@@ -10,5 +10,9 @@ describe('Creating records', () => {
             assert(!joe.isNew)
             done()
         })
+        .catch((error) => {
+            assert(!joe.isNew)
+            done()
+        })
     })
 })

@@ -9,13 +9,21 @@ before((done) => {
     mongoose.connection
         .once('open', () => { done()})
         .on('error', (error) => {
-            console.warn("Error CONNECTION", error)
+            console.warn("Error CONNECTION", error) 
         })
 })
 
 beforeEach((done) => {
-    mongoose.connection.collections.users.drop()
+    if(mongoose.connection.collections.users){
+        mongoose.connection.collections.users.drop()
         .then(() => {
             done()
         })
+        .catch((error) => {
+            console.log(error)
+            done()
+        })
+    }else{
+        done()
+    }    
 })

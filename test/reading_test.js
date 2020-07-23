@@ -2,40 +2,17 @@ const assert = require('assert')
 const User = require('../src/user')
 
 describe("Reading users out of the database", () => {
-    const joe = new User({ name: 'Joe' })
-    beforeEach(done => {
-        joe.save().then(() => done())
+    it('find a user with a particular id', async () => {
+        const joe = new User({ name: 'Joe' })
+        await joe.save()
+        const user = await User.findOne({ _id: joe._id })
+        assert(user._id.toString() === joe._id.toString())
     })
-    it('find a user with a particular id', done => {
-        User.findOne({ _id: joe._id })
-            .then(() => {
-                assert(true)
-                done()
-            })
-            .catch(error => {
-                console.log(error)
-                assert(false)
-                done()
-            })
-    })
-})
+    it('find a user with a particular id', async () => {
+        const joe = new User({ name: 'Joe' })
+        await joe.save()
+        const users = await User.find({ name: 'Joe' })
+        assert(users[0]._id.toString() === joe._id.toString())
 
-describe("Reading users out of the database", () => {
-    const joe = new User({ name: 'Joe' })
-    beforeEach(done => {
-        joe.save().then(() => done())
     })
-    it('finds all users with a name of joe', (done) => {
-        User.find({ name: 'Joe' })
-            .then((users) => {
-                assert(users[0]._id.toString() === joe._id.toString())
-                done()
-            })
-            .catch(error => {
-                console.log(error)
-                assert(false)
-                done()
-            })
-    })
-
 })

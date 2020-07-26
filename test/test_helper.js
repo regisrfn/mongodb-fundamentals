@@ -5,7 +5,8 @@ mongoose.Promise = global.Promise
 before((done) => {
     //development mode
     //DATABASE_API = mongodb://localhost
-    mongoose.connect(`${process.env.DATABASE_API}/users_test`, { useNewUrlParser: true, useUnifiedTopology: true })
+    mongoose.connect(`${process.env.DATABASE_API}/users_test`, { useNewUrlParser: true, 
+        useUnifiedTopology: true, useFindAndModify: false})
     mongoose.connection
         .once('open', () => { done() })
         .on('error', (error) => {
@@ -15,5 +16,10 @@ before((done) => {
 
 beforeEach((done) => {
     const { users} = mongoose.connection.collections
-    users.drop(() => done())  
+    users.drop()
+    .then(() => done())
+    .catch(error=>{
+        console.log(error)
+        done(error)
+    }) 
 })

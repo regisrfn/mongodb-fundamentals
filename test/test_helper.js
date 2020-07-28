@@ -1,5 +1,6 @@
 require('dotenv').config()
 const mongoose = require('mongoose')
+const User = require('../src/user')
 mongoose.Promise = global.Promise
 
 before((done) => {
@@ -17,15 +18,16 @@ before((done) => {
 })
 
 beforeEach((done) => {
-    if (mongoose.connection.collections.users) {
-        const { users } = mongoose.connection.collections
-        users.drop()
-            .then(() => done())
-            .catch(error => {
-                console.log(error)
-                done(error)
-            })
-    } else {
-        done()
-    }
+    const { users } = mongoose.connection.collections
+    users.drop()
+        .then(() => {
+            done()
+        })
+        .catch(err => {
+            if(err.message = 'ns not found'){
+                done()
+            }else{
+                done(err)
+            }
+        })
 })

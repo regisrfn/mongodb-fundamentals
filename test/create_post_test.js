@@ -16,7 +16,7 @@ describe('Creating post', () => {
         assert(user.posts[0].title === 'PostTitle')
     })
 
-    it('add subdocuments to an existing record', (done) => {
+    it('add subDocuments to an existing record', (done) => {
         const joe = new User({
             name: 'Joe',
             posts: []

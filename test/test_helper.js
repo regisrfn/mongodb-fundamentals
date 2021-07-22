@@ -17,17 +17,28 @@ before((done) => {
         })
 })
 
-beforeEach((done) => {
-    const { users } = mongoose.connection.collections
-    users.drop()
-        .then(() => {
-            done()
-        })
-        .catch(err => {
-            if(err.message = 'ns not found'){
-                done()
-            }else{
-                done(err)
-            }
-        })
+var chai = require('chai'); 
+chai.should();  
+
+beforeEach(async () => {
+    const { users, comments, blog_posts } = mongoose.connection.collections
+    
+    try{
+        await users.drop();  
+    }
+    catch(err){
+        err.message.should.equal("ns not found")
+    }
+    try{
+        await comments.drop();  
+    }
+    catch(err){
+        err.message.should.equal("ns not found")
+    }
+    try{
+        await blog_posts.drop();  
+    }
+    catch(err){
+        err.message.should.equal("ns not found")
+    }
 })

@@ -15,11 +15,9 @@ describe('Creating records', () => {
                 assert.strictEqual(users.length,1)
                 assert(users[0]._id.toString() === joe._id.toString())
                 assert(!joe.isNew)
-                console.log("ixe")
                 done()
             })
             .catch(err => {
-                console.log("ixe")
                 done(err)
             })
     })

@@ -13,5 +13,8 @@
     "mocha": "^6.2.3",
     "mongoose": "^5.9.16",
     "nodemon": "^2.0.4"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4"
   }
 }

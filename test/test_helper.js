@@ -17,28 +17,23 @@ before((done) => {
         })
 })
 
-var chai = require('chai'); 
-chai.should();  
+var chai = require('chai');
+chai.should();
 
-beforeEach(async () => {
+beforeEach((done) => {
     const { users, comments, blog_posts } = mongoose.connection.collections
-    
-    try{
-        await users.drop();  
-    }
-    catch(err){
-        err.message.should.equal("ns not found")
-    }
-    try{
-        await comments.drop();  
-    }
-    catch(err){
-        err.message.should.equal("ns not found")
-    }
-    try{
-        await blog_posts.drop();  
-    }
-    catch(err){
-        err.message.should.equal("ns not found")
-    }
+    Promise.all([
+        users.drop().catch(err => handleNotFoundDB(err, done)),
+        comments.drop().catch(err => handleNotFoundDB(err, done)),
+        blog_posts.drop().catch(err => handleNotFoundDB(err, done))
+    ])
+        .then(() => {
+            done();
+        })
+        .catch(() => done(err))
 })
+
+function handleNotFoundDB(err, done) {
+    return err.message === "ns not found" ? err.message : done(err)
+}
+

@@ -1,7 +1,9 @@
 require('dotenv').config()
-const mongoose = require('mongoose')
-const User = require('../src/user')
-mongoose.Promise = global.Promise
+const mongoose = require('mongoose');
+const User = require('../src/user');
+const assert = require('assert');
+
+mongoose.Promise = global.Promise;
 
 before((done) => {
     //development mode
@@ -17,23 +19,20 @@ before((done) => {
         })
 })
 
-var chai = require('chai');
-chai.should();
-
 beforeEach((done) => {
     const { users, comments, blog_posts } = mongoose.connection.collections
     Promise.all([
-        users.drop().catch(err => handleNotFoundDB(err, done)),
-        comments.drop().catch(err => handleNotFoundDB(err, done)),
-        blog_posts.drop().catch(err => handleNotFoundDB(err, done))
+        users.drop().catch(err => handleNotFoundDB(err)),
+        comments.drop().catch(err => handleNotFoundDB(err)),
+        blog_posts.drop().catch(err => handleNotFoundDB(err))
     ])
         .then(() => {
             done();
         })
-        .catch(() => done(err))
+        .catch((err) => done(err))
 })
 
-function handleNotFoundDB(err, done) {
-    return err.message === "ns not found" ? err.message : done(err)
+function handleNotFoundDB(err) {
+    assert.strictEqual(err.message, "ns not found");
 }
 
